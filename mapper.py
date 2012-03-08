@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-
+# This is a Mapper that I stole from the web.
 # input comes from STDIN (standard input)
 
 for line in sys.stdin:
