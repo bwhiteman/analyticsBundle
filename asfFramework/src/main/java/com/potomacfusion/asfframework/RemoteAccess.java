@@ -2,24 +2,26 @@ package com.potomacfusion.asfframework;
 
 import com.potomacfusion.asfframework.exceptions.InvalidXMLException;
 import com.potomacfusion.asfframework.jobs.Job;
+import com.potomacfusion.asfframework.jobs.OozieJob;
 import com.potomacfusion.asfframework.jobs.PythonHadoopJob;
 import com.potomacfusion.asfframework.jobs.PythonJob;
-import java.io.File;
-import java.io.IOException;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import org.w3c.dom.Document;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.common.IOUtils;
 import net.schmizz.sshj.connection.channel.direct.Session;
 import net.schmizz.sshj.connection.channel.direct.Session.Command;
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
+import java.io.IOException;
 
 public class RemoteAccess {
 
     // ##START BLOCK FOR ADDING ADDITIONAL JOB TYPES ##
-    private static enum JOBS {PYTHON, PYTHON_HADOOP};
+    private static enum JOBS {PYTHON, PYTHON_HADOOP, OOZIE};
     
     private static String getCallToServer(Document doc) throws InvalidXMLException{
         
@@ -36,6 +38,8 @@ public class RemoteAccess {
             case PYTHON_HADOOP:
                 myJob = new PythonHadoopJob(doc);
                 break;
+            case OOZIE:
+                myJob = new OozieJob();
         }
         
         if (myJob == null){
