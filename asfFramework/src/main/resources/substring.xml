@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<specification>
+	<analytic name="Substring" language="python"/>
+	<inputs>
+		<input name="input" value="myString"/>
+		<input name="start" value="2"/>
+		<input name="end" value="5"/>
+	</inputs>
+	<dependencies>
+		<dependency name="string"/>
+	</dependencies>
+</specification>
