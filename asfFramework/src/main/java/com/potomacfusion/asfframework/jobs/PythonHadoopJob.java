@@ -19,12 +19,14 @@ public class PythonHadoopJob implements Job{
     //./hadoop jar ../contrib/streaming/hadoop-streaming-0.20.2-cdh3u3.jar -file 
     // /home/hduser/mapper.py -mapper /home/hduser/mapper.py -file /home/hduser/reducer.py 
     // -reducer /home/hduser/reducer.py -input /user/hduser/gutenberg/* -output /user/hduser/gutenberg-output
-    private String mapper;
-    private String reducer;
-    private String input;
-    private String output;
-    
-    private enum ATTRIBUTES {MAPPER, REDUCER, INPUT, OUTPUT};
+    private String mapper = null;
+    private String reducer = null;
+    private String input = null;
+    private String output = null;
+    private String mapperFile = null;
+    private String reducerFile = null;
+     
+    private enum ATTRIBUTES {MAPPER, MAPPERFILE, REDUCER, REDUCERFILE, INPUT, OUTPUT};
     
     public PythonHadoopJob(Document doc) throws InvalidXMLException{
 
@@ -36,8 +38,14 @@ public class PythonHadoopJob implements Job{
                 case MAPPER:
                     this.mapper = e.getAttribute("value");
                     break;
+                case MAPPERFILE:
+                    this.mapperFile = e.getAttribute("value");
+                    break;
                 case REDUCER:
                     this.reducer = e.getAttribute("value");
+                    break;
+                case REDUCERFILE:
+                    this.reducerFile = e.getAttribute("value");
                     break;
                 case INPUT:
                     this.input = e.getAttribute("value");
@@ -48,7 +56,8 @@ public class PythonHadoopJob implements Job{
             }            
         }
         
-        if (mapper == null || reducer == null || input == null || output == null){
+        if (mapper == null || reducer == null || input == null || output == null
+                || mapperFile == null || reducerFile == null){
             throw new InvalidXMLException();
         }        
     }
@@ -56,8 +65,8 @@ public class PythonHadoopJob implements Job{
     public String getTask() {
         return Configurations.HADOOP + " jar " +
                Configurations.HADOOP_STREAMING_JAR + " " +
-               "-file " + mapper + " -mapper " + mapper + " " +
-               "-file " + reducer + " -reducer " + reducer + " " +
+               "-file " + mapperFile + " -mapper " + mapper + " " +
+               "-file " + reducerFile + " -reducer " + reducer + " " +
                "-input " + input + " -output " + output;
     }
 }
