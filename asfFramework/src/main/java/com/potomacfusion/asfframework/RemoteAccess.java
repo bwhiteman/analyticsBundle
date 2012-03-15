@@ -1,19 +1,18 @@
 package com.potomacfusion.asfframework;
 
 import com.potomacfusion.asfframework.exceptions.InvalidXMLException;
+import java.io.File;
+import java.io.IOException;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document;
 import com.potomacfusion.asfframework.jobs.*;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.common.IOUtils;
 import net.schmizz.sshj.connection.channel.direct.Session;
 import net.schmizz.sshj.connection.channel.direct.Session.Command;
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
-import java.io.IOException;
 
 public class RemoteAccess {
 
@@ -53,76 +52,11 @@ public class RemoteAccess {
 
     public static void main(String[] args) throws IOException {
         
-        // -d local <source> <target>
-        if (args.length == 4 && args[0].equalsIgnoreCase("-d") && args[1].equalsIgnoreCase("local")) {
-            deployLocalResource(args[2], args[3]);
-        } 
-        
-        // -d hdfs <filename> <target>
-        else if (args.length == 4 && args[0].equalsIgnoreCase("-d") && args[1].equalsIgnoreCase("hdfs")){
-            deployResourceToHDFS(args[2], args[3]);
-        }
-        
         // -x <context>
-        else if (args.length == 2 && args[0].equalsIgnoreCase("-x")) {
+        if (args.length == 2 && args[0].equalsIgnoreCase("-x")) {
             execute(args[1]);
         }
 
-    }
-    
-    private static void deployLocalResource(String source, String target) throws IOException{
-        SSHClient ssh = new SSHClient();
-        try{
-            // overhead connection stuff for ssh
-            ssh.addHostKeyVerifier(new PromiscuousVerifier());
-            ssh.connect(Configurations.HOST_NAME);
-            ssh.authPassword(Configurations.USER_NAME, Configurations.PASSWORD);
-            
-            // upload data            
-            ssh.newSCPFileTransfer().upload(source, Configurations.ANALYTIC_ROOT + target);
-                       
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (ssh != null) {
-                ssh.disconnect();
-            }
-        }
-    }
-    
-    private static void deployResourceToHDFS(String source, String hdfsPath) throws IOException{
-       
-        SSHClient ssh = new SSHClient();
-        try{
-            // overhead connection stuff for ssh
-            ssh.addHostKeyVerifier(new PromiscuousVerifier());
-            ssh.connect(Configurations.HOST_NAME);
-            ssh.authPassword(Configurations.USER_NAME, Configurations.PASSWORD);
-            
-            // deploly to hdfs
-            String dest = Configurations.ANALYTIC_ROOT + "tmp/" + source;
-            ssh.newSCPFileTransfer().upload(source, dest);
-            String task = Configurations.HADOOP + " dfs -copyFromLocal " + dest + " " + hdfsPath; 
-
-            
-            // TODO: clean up the temp file
-            final Session session = ssh.startSession();
-            try{                
-                final Command cmd = session.exec(task);
-                System.out.println(IOUtils.readFully(cmd.getInputStream()).toString());
-            }
-            finally{
-                session.close();
-            }
-                    }
-        catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (ssh != null) {
-                ssh.disconnect();
-            }
-        }
     }
     
     private static void execute(String contextPath) throws IOException {
@@ -141,6 +75,10 @@ public class RemoteAccess {
             ssh.connect(Configurations.HOST_NAME, 22);
             ssh.authPassword(Configurations.USER_NAME, Configurations.PASSWORD);
 
+            // Deploy resources if necessary
+            ResourceDeployer.deployResources(doc);
+            
+            // Execute the task
             String task = getCallToServer(doc);
             final Session session = ssh.startSession();
             try{                
@@ -163,7 +101,5 @@ public class RemoteAccess {
                 ssh.disconnect();
             }
         }
-    }
-    
-
+    } 
 }
