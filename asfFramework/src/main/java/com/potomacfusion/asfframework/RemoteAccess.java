@@ -36,10 +36,10 @@ public class RemoteAccess {
                 myJob = new PythonHadoopJob(doc);
                 break;
             case OOZIE:
-                myJob = new OozieJob();
+                myJob = new OozieJob(doc);
                 break;
             case OOZIE_STREAMING:
-                myJob = new OozieStreamingJob();
+                myJob = new OozieStreamingJob(doc);
                 break;
         }
         
