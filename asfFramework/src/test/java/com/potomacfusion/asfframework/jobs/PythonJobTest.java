@@ -4,6 +4,7 @@
  */
 package com.potomacfusion.asfframework.jobs;
 
+import com.potomacfusion.asfframework.Configurations;
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -39,7 +40,7 @@ public class PythonJobTest {
         try{
             PythonJob myJob = new PythonJob(validPython);
             String task = myJob.getTask();
-            assertEquals(task, "python /analytics/shipSorter.py aisShipData.csv ADEONA");
+            assertEquals(task, Configurations.PYTHON_PATH + " " + Configurations.ANALYTIC_ROOT + "shipSorter.py aisShipData.csv ADEONA");
         }
         catch(Exception e){
             fail();

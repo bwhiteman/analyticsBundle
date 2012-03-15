@@ -4,6 +4,7 @@
  */
 package com.potomacfusion.asfframework.jobs;
 
+import com.potomacfusion.asfframework.Configurations;
 import com.potomacfusion.asfframework.exceptions.InvalidXMLException;
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
@@ -44,7 +45,8 @@ public class PythonHadoopJobTest {
         try{
             PythonHadoopJob myJob = new PythonHadoopJob(validPythonHadoop);
             String task = myJob.getTask();
-            assertEquals(task, "/srv/hadoop/bin/hadoop jar /srv/hadoop/contrib/streaming/hadoop-0.20.2-streaming.jar -file /analytics/tmp/mapper.py "
+            System.out.println(task);
+            assertEquals(task, Configurations.HADOOP + " jar " + Configurations.HADOOP_STREAMING_JAR + " -file /analytics/tmp/mapper.py "
                     + "-mapper mapper.py -file /analytics/tmp/reducer.py -reducer reducer.py -input /tmp/txt/* -output /tmp/out");
         }
         catch(Exception e){
