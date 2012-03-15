@@ -84,16 +84,17 @@ public class RemoteAccess {
             final Session session = ssh.startSession();
             try{                
                 System.out.println("Invoking: " + task);
-                final Command cmd = session.exec(task);
+                String dir = "cd " + Configurations.ANALYTIC_ROOT;
+                final Command cmd = session.exec(dir + ";" + task);
                 System.out.println("\nOutput\n------");
                 System.out.println(IOUtils.readFully(cmd.getInputStream()).toString());
             }
             finally{
                 session.close();
             }
-
-            // TODO: handle success/failure, assuming success for now
-
+            
+            // After the task has completed, pull the results back
+            ResourceManager.getOutputs(doc);
 
         } catch (Exception e) {
             e.printStackTrace();

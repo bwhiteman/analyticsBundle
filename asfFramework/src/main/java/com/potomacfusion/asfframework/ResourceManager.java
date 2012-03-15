@@ -11,6 +11,9 @@ import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.connection.channel.direct.Session;
 import net.schmizz.sshj.connection.channel.direct.Session.Command;
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
+import net.schmizz.sshj.xfer.FileSystemFile;
+import net.schmizz.sshj.xfer.LocalSourceFile;
+import net.schmizz.sshj.xfer.scp.SCPFileTransfer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -33,6 +36,15 @@ public class ResourceManager {
             else if (e.getAttribute("location").equalsIgnoreCase("hdfs")){
                 deployResourceToHDFS(source, target);
             }
+        }
+    }
+    
+        
+    public static void getOutputs(Document doc) throws Exception{
+        NodeList outputs = doc.getElementsByTagName("output");
+        for (int i = 0; i < outputs.getLength(); i++){
+            Element e = (Element)outputs.item(i);
+            getRemoteResource(e.getAttribute("name"), e.getAttribute("name"));
         }
     }
     
@@ -68,7 +80,7 @@ public class ResourceManager {
 
             // upload data            
             System.out.println("Deploying " + source);
-            ssh.newSCPFileTransfer().upload(source, Configurations.ANALYTIC_ROOT + target);
+            ssh.newSCPFileTransfer().newSCPUploadClient().copy(new FileSystemFile(source), Configurations.ANALYTIC_ROOT + target);           
             System.out.println(source + " successfully deployed to " + target);
 
         }
@@ -116,4 +128,24 @@ public class ResourceManager {
             }
         }
     }
+    
+    private static void getRemoteResource(String remotePath, String localPath) throws Exception{
+        SSHClient ssh = new SSHClient();
+        try {
+            // overhead connection stuff for ssh
+            ssh.addHostKeyVerifier(new PromiscuousVerifier());
+            ssh.connect(Configurations.HOST_NAME);
+            ssh.authPassword(Configurations.USER_NAME, Configurations.PASSWORD);
+            
+            ssh.newSCPFileTransfer().download(Configurations.ANALYTIC_ROOT + remotePath, localPath);
+        
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (ssh != null) {
+                ssh.disconnect();
+            }
+        }
+    }
+
 }

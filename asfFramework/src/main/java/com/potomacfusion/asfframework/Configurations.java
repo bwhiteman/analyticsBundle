@@ -12,9 +12,9 @@ public class Configurations {
     
     // System Login    
     public static final String HOST_NAME = "gmdev";
-    public static final String USER_NAME = "hduser";
+    public static final String USER_NAME = "root";
     public static final String CERT_LOCATION = "/users/bwhiteman/.ssh/hduser.priv";
-    public static final String PASSWORD = "hadoop";
+    public static final String PASSWORD = "ghostmachine20";
     
     // System Paths
     public static final String HADOOP = "/opt/hadoop/bin/hadoop";
