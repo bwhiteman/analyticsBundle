@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<specification>
+	<analytic name="WordCount" language="python_hadoop"/>
+	<inputs>
+		<input name="mapper" value="mapper.py"/>
+		<input name="mapperFile" value="/analytics/tmp/mapper.py"/>
+		<input name="reducer" value="reducer.py"/>
+		<input name="reducerFile" value = "/analytics/tmp/reducer.py"/>
+		<input name="input" value="/tmp/txt/*"/>
+		<input name="output" value="/tmp/out"/>
+	</inputs>
+	<resources>
+		<resource source="mapper.py" target="tmp/mapper.py" location="local"/>
+		<resource source="reducer.py" target="tmp/reducer.py" location="local"/>
+		<resource source="pg4300.txt" target="/tmp/txt/pg4300.txt" location="hdfs"/>
+		<resource source="pg5000.txt" target="/tmp/txt/pg5000.txt" location="hdfs"/>
+		<resource source="pg20417.txt" target="/tmp/txt/pg20417.txt" location="hdfs"/>
+	</resources>
+</specification>
