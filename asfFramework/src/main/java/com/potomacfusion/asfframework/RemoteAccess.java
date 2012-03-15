@@ -1,15 +1,12 @@
 package com.potomacfusion.asfframework;
 
 import com.potomacfusion.asfframework.exceptions.InvalidXMLException;
-import com.potomacfusion.asfframework.jobs.Job;
-import com.potomacfusion.asfframework.jobs.OozieJob;
-import com.potomacfusion.asfframework.jobs.PythonHadoopJob;
-import com.potomacfusion.asfframework.jobs.PythonJob;
 import java.io.File;
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
+import com.potomacfusion.asfframework.jobs.*;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.common.IOUtils;
 import net.schmizz.sshj.connection.channel.direct.Session;
@@ -20,7 +17,7 @@ import org.w3c.dom.Element;
 public class RemoteAccess {
 
     // ##START BLOCK FOR ADDING ADDITIONAL JOB TYPES ##
-    private static enum JOBS {PYTHON, PYTHON_HADOOP, OOZIE};
+    private static enum JOBS {PYTHON, PYTHON_HADOOP, OOZIE, OOZIE_STREAMING};
     
     private static String getCallToServer(Document doc) throws InvalidXMLException{
         
@@ -39,6 +36,9 @@ public class RemoteAccess {
                 break;
             case OOZIE:
                 myJob = new OozieJob();
+                break;
+            case OOZIE_STREAMING:
+                myJob = new OozieStreamingJob();
                 break;
         }
         
