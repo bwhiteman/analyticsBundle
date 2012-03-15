@@ -8,6 +8,7 @@ package com.potomacfusion.asfframework.jobs;
 public class OozieStreamingJob implements Job {
 
     public String getTask() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return "oozie job -oozie http://localhost:11000/oozie -config wordcount/job.properties -run";
+
     }
 }
