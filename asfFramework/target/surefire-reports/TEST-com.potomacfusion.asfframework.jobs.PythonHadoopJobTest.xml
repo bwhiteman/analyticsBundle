@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.004" errors="0" skipped="0" tests="1" name="com.potomacfusion.asfframework.jobs.PythonJobTest">
+<testsuite failures="0" time="0.061" errors="0" skipped="0" tests="2" name="com.potomacfusion.asfframework.jobs.PythonHadoopJobTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.6.0_26\jre\bin"/>
@@ -60,5 +60,6 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase time="0.002" classname="com.potomacfusion.asfframework.jobs.PythonJobTest" name="testValidPythonJobXMLParse"/>
+  <testcase time="0.024" classname="com.potomacfusion.asfframework.jobs.PythonHadoopJobTest" name="testValidPythonHadoopJobXMLParse"/>
+  <testcase time="0.004" classname="com.potomacfusion.asfframework.jobs.PythonHadoopJobTest" name="testInvalidPythonHadoopJobXMLParse"/>
 </testsuite>

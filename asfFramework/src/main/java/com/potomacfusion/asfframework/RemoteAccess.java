@@ -77,7 +77,7 @@ public class RemoteAccess {
             ssh.authPassword(Configurations.USER_NAME, Configurations.PASSWORD);
 
             // Deploy resources if necessary
-            ResourceDeployer.deployResources(doc);
+            ResourceManager.deployResources(doc);
             
             // Execute the task
             String task = getCallToServer(doc);
