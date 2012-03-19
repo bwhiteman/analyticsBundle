@@ -9,6 +9,9 @@
 		<input name="input" value="/tmp/txt/*"/>
 		<input name="output" value="/tmp/out"/>
 	</inputs>
+        <outputs>
+               <output source="/tmp/out/*" target="." location="hdfs"/>
+        </outputs>
 	<resources>
 		<resource source="mapper.py" target="tmp/mapper.py" location="local"/>
 		<resource source="reducer.py" target="tmp/reducer.py" location="local"/>

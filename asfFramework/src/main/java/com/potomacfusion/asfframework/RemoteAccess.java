@@ -84,7 +84,7 @@ public class RemoteAccess {
             final Session session = ssh.startSession();
             try{                
                 System.out.println("Invoking: " + task);
-                String dir = "cd " + Configurations.ANALYTIC_ROOT;
+                String dir = "cd " + Configurations.USER_HOME;
                 final Command cmd = session.exec(dir + ";" + task);
                 System.out.println("\nOutput\n------");
                 System.out.println(IOUtils.readFully(cmd.getInputStream()).toString());

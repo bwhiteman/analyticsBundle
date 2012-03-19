@@ -23,7 +23,7 @@ public class PythonJob implements Job {
 
     public PythonJob(Document doc) throws InvalidXMLException{
         NodeList n = doc.getElementsByTagName("input");
-        fileName = Configurations.ANALYTIC_ROOT + ((Element) doc.getElementsByTagName("analytic").item(0)).getAttribute("name");        
+        fileName = Configurations.USER_HOME + ((Element) doc.getElementsByTagName("analytic").item(0)).getAttribute("name");        
         params = new ArrayList<String>();
         
         if (n == null || fileName == null){
