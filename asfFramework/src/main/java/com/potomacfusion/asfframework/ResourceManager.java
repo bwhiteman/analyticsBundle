@@ -78,12 +78,12 @@ public class ResourceManager {
         try{
             // overhead connection stuff for ssh
             ssh.addHostKeyVerifier(new PromiscuousVerifier());
-            ssh.connect(Configurations.HOST_NAME);
-            ssh.authPassword(Configurations.USER_NAME, Configurations.PASSWORD);
+            ssh.connect(Configurations.getProperty("HOST_NAME"));
+            ssh.authPassword(Configurations.getProperty("USER_NAME"), Configurations.getProperty("PASSWORD"));
 
             // upload data            
             System.out.println("Deploying " + source);
-            ssh.newSCPFileTransfer().newSCPUploadClient().copy(new FileSystemFile(source), Configurations.USER_HOME + target);           
+            ssh.newSCPFileTransfer().newSCPUploadClient().copy(new FileSystemFile(source), Configurations.getProperty("USER_HOME") + target);           
             System.out.println(source + " successfully deployed to " + target);
 
         }
@@ -102,15 +102,15 @@ public class ResourceManager {
         try{
             // overhead connection stuff for ssh
             ssh.addHostKeyVerifier(new PromiscuousVerifier());
-            ssh.connect(Configurations.HOST_NAME);
-            ssh.authPassword(Configurations.USER_NAME, Configurations.PASSWORD);
+            ssh.connect(Configurations.getProperty("HOST_NAME"));
+            ssh.authPassword(Configurations.getProperty("USER_NAME"), Configurations.getProperty("PASSWORD"));
             
             // deploly to hdfs
-            String dest = Configurations.USER_TMP + source;
+            String dest = Configurations.getProperty("USER_TMP") + source;
             System.out.println("Deploying " + source);
             ssh.newSCPFileTransfer().upload(source, dest);
             System.out.println(source + " successfully deployed to " + dest);
-            String task = Configurations.HADOOP + " dfs -copyFromLocal " + dest + " " + hdfsPath; 
+            String task = Configurations.getProperty("HADOOP") + " dfs -copyFromLocal " + dest + " " + hdfsPath; 
             
             // TODO: clean up the temp file
             final Session session = ssh.startSession();
@@ -137,10 +137,10 @@ public class ResourceManager {
         try {
             // overhead connection stuff for ssh
             ssh.addHostKeyVerifier(new PromiscuousVerifier());
-            ssh.connect(Configurations.HOST_NAME);
-            ssh.authPassword(Configurations.USER_NAME, Configurations.PASSWORD);
+            ssh.connect(Configurations.getProperty("HOST_NAME"));
+            ssh.authPassword(Configurations.getProperty("USER_NAME"), Configurations.getProperty("PASSWORD"));
 
-            ssh.newSCPFileTransfer().download(Configurations.USER_HOME + remotePath, localPath);
+            ssh.newSCPFileTransfer().download(Configurations.getProperty("USER_HOME") + remotePath, localPath);
         
         } catch (Exception e) {
             e.printStackTrace();
@@ -156,10 +156,10 @@ public class ResourceManager {
         try{
             // overhead connection stuff for ssh
             ssh.addHostKeyVerifier(new PromiscuousVerifier());
-            ssh.connect(Configurations.HOST_NAME);
-            ssh.authPassword(Configurations.USER_NAME, Configurations.PASSWORD);
+            ssh.connect(Configurations.getProperty("HOST_NAME"));
+            ssh.authPassword(Configurations.getProperty("USER_NAME"), Configurations.getProperty("PASSWORD"));
             
-            String task = "rm -rf " + Configurations.USER_TMP + "*"; 
+            String task = "rm -rf " + Configurations.getProperty("USER_TMP") + "*"; 
             
             // TODO: clean up the temp file
             final Session session = ssh.startSession();
@@ -185,11 +185,11 @@ public class ResourceManager {
         try{
             // overhead connection stuff for ssh
             ssh.addHostKeyVerifier(new PromiscuousVerifier());
-            ssh.connect(Configurations.HOST_NAME);
-            ssh.authPassword(Configurations.USER_NAME, Configurations.PASSWORD);
+            ssh.connect(Configurations.getProperty("HOST_NAME"));
+            ssh.authPassword(Configurations.getProperty("USER_NAME"), Configurations.getProperty("PASSWORD"));
             
             // Copy the remote file from HDFS to remote local
-            String task = "cd " + Configurations.USER_HOME+ " ; " + Configurations.HADOOP + " dfs -copyToLocal " + hdfsPath + " tmp/"; 
+            String task = "cd " + Configurations.getProperty("USER_HOME")+ " ; " + Configurations.getProperty("HADOOP") + " dfs -copyToLocal " + hdfsPath + " tmp/"; 
             System.out.println(task);
             
             final Session session = ssh.startSession();
@@ -202,7 +202,7 @@ public class ResourceManager {
             }
                       
             // Copy from remote system to our local system
-            ssh.newSCPFileTransfer().download(Configurations.USER_TMP, localPath);            
+            ssh.newSCPFileTransfer().download(Configurations.getProperty("USER_TMP"), localPath);            
             
         } catch (Exception e) {
             e.printStackTrace();

@@ -63,8 +63,8 @@ public class PythonHadoopJob implements Job{
     }
     
     public String getTask() {
-        return Configurations.HADOOP + " jar " +
-               Configurations.HADOOP_STREAMING_JAR + " " +
+        return Configurations.getProperty("HADOOP") + " jar " +
+               Configurations.getProperty("HADOOP_STREAMING_JAR") + " " +
                "-file " + mapperFile + " -mapper " + mapper + " " +
                "-file " + reducerFile + " -reducer " + reducer + " " +
                "-input " + input + " -output " + output;

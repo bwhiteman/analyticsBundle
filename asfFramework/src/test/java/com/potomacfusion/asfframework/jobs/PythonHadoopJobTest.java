@@ -46,7 +46,7 @@ public class PythonHadoopJobTest {
             PythonHadoopJob myJob = new PythonHadoopJob(validPythonHadoop);
             String task = myJob.getTask();
             System.out.println(task);
-            assertEquals(task, Configurations.HADOOP + " jar " + Configurations.HADOOP_STREAMING_JAR + " -file /analytics/tmp/mapper.py "
+            assertEquals(task, Configurations.getProperty("HADOOP") + " jar " + Configurations.getProperty("HADOOP_STREAMING_JAR") + " -file /analytics/tmp/mapper.py "
                     + "-mapper mapper.py -file /analytics/tmp/reducer.py -reducer reducer.py -input /tmp/txt/* -output /tmp/out");
         }
         catch(Exception e){

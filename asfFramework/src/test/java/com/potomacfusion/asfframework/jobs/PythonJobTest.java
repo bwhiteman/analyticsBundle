@@ -40,7 +40,7 @@ public class PythonJobTest {
         try{
             PythonJob myJob = new PythonJob(validPython);
             String task = myJob.getTask();
-            assertEquals(task, Configurations.PYTHON_PATH + " " + Configurations.USER_HOME + "shipSorter.py aisShipData.csv ADEONA");
+            assertEquals(task, Configurations.getProperty("PYTHON_PATH") + " " + Configurations.getProperty("USER_HOME") + "shipSorter.py aisShipData.csv ADEONA");
         }
         catch(Exception e){
             fail();

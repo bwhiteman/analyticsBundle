@@ -4,24 +4,25 @@
  */
 package com.potomacfusion.asfframework;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 /**
  *
  * @author SPines
  */
 public class Configurations {
     
-    // System Login    
-    public static final String HOST_NAME = "gmdev";
-    public static final String USER_NAME = "root";
-    public static final String CERT_LOCATION = "/users/bwhiteman/.ssh/hduser.priv";
-    public static final String PASSWORD = "ghostmachine20";
+    private static final Properties props = new Properties();
     
-    // System Paths
-//    public static final String HADOOP = "/opt/hadoop/bin/hadoop";
-    public static final String HADOOP = "/srv/hadoop/bin/hadoop";
-    public static final String HADOOP_STREAMING_JAR = "/srv/hadoop/contrib/streaming/hadoop-0.20.2-streaming.jar";
-    public static final String PYTHON_PATH = "python";
-    public static final String USER_HOME = "/home/"+USER_NAME+"/";
-    public static final String USER_TMP = USER_HOME + "tmp/";
+    public static void init(String propertiesFile) throws IOException{
+        FileInputStream input = new FileInputStream(propertiesFile);
+        props.load(input);
+        input.close();
+    }
     
+    public static String getProperty(String key){
+        return props.getProperty(key);
+    }
 }

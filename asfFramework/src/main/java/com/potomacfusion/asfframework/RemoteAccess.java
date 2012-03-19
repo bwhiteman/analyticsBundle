@@ -53,9 +53,10 @@ public class RemoteAccess {
 
     public static void main(String[] args) throws IOException {
         
-        // -x <context>
-        if (args.length == 2 && args[0].equalsIgnoreCase("-x")) {
-            execute(args[1]);
+        // java -jar framework.jar context.xml remote.properties
+        if (args.length == 2) {
+            Configurations.init(args[1]);
+            execute(args[0]);
         }
 
     }
@@ -73,8 +74,8 @@ public class RemoteAccess {
 
             // Connect, ignore host key verification
             ssh.addHostKeyVerifier(new PromiscuousVerifier());
-            ssh.connect(Configurations.HOST_NAME, 22);
-            ssh.authPassword(Configurations.USER_NAME, Configurations.PASSWORD);
+            ssh.connect(Configurations.getProperty("HOST_NAME"), 22);
+            ssh.authPassword(Configurations.getProperty("USER_NAME"), Configurations.getProperty("PASSWORD"));
 
             // Deploy resources if necessary
             ResourceManager.deployResources(doc);
@@ -84,7 +85,7 @@ public class RemoteAccess {
             final Session session = ssh.startSession();
             try{                
                 System.out.println("Invoking: " + task);
-                String dir = "cd " + Configurations.USER_HOME;
+                String dir = "cd " + Configurations.getProperty("USER_HOME");
                 final Command cmd = session.exec(dir + ";" + task);
                 System.out.println("\nOutput\n------");
                 System.out.println(IOUtils.readFully(cmd.getInputStream()).toString());
