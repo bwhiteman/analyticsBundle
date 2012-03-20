@@ -4,8 +4,11 @@
  */
 package com.potomacfusion.asfframework;
 
+import com.potomacfusion.asfframework.jobs.Output;
+import com.potomacfusion.asfframework.jobs.Resource;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.connection.channel.direct.Session;
@@ -22,56 +25,54 @@ import org.w3c.dom.NodeList;
  */
 public class ResourceManager {
 
-    public static void deployResources(Document doc) throws IOException{
-        NodeList resources = doc.getElementsByTagName("resource");
-        for (int i = 0; i < resources.getLength(); i++){
-            Element e = (Element)resources.item(i);
-            String source = e.getAttribute("source");
-            String target = e.getAttribute("target");
-            if (e.getAttribute("location").equalsIgnoreCase("local")){
+    public static void deployResources(List<Resource> resources) throws IOException{
+        for (Resource r : resources){
+            String source = r.getSource();
+            String target = r.getTarget();
+            if (r.getLocation().equalsIgnoreCase("local")){
                 deployLocalResource(source, target);
             }
-            else if (e.getAttribute("location").equalsIgnoreCase("hdfs")){
+            else if (r.getLocation().equalsIgnoreCase("hdfs")){
                 deployResourceToHDFS(source, target);
             }
         }
     }
     
         
-    public static void getOutputs(Document doc) throws Exception{
-        NodeList outputs = doc.getElementsByTagName("output");
-        for (int i = 0; i < outputs.getLength(); i++){
-            Element e = (Element)outputs.item(i);
-            if (e.getAttribute("location").equalsIgnoreCase("local")){
-                getRemoteResource(e.getAttribute("name"), e.getAttribute("name"));
+    public static void getOutputs(List<Output> outputs) throws Exception{
+        for (Output o : outputs){
+            String source = o.getSource();
+            String target = o.getTarget();
+            if (o.getLocation().equalsIgnoreCase("local")){
+                getRemoteResource(source, target);
             }
-            else if (e.getAttribute("location").equalsIgnoreCase("hdfs")){
-                getRemoteResourceFromHDFS(e.getAttribute("source"), e.getAttribute("target"));
+            else if (o.getLocation().equalsIgnoreCase("hdfs")){
+                getRemoteResourceFromHDFS(source, target);
             }
         }
     }
     
     // TEST ONLY - testing branching logic
-    protected static Map<String, Integer> deployResourcesTest(Document doc) throws IOException{
-        NodeList resources = doc.getElementsByTagName("resource");
-        Map<String, Integer> ret = new HashMap<String, Integer>();
-        ret.put("local", 0);
-        ret.put("hdfs", 0);
-        for (int i = 0; i < resources.getLength(); i++){
-            Element e = (Element)resources.item(i);
-            String source = e.getAttribute("source");
-            String target = e.getAttribute("target");
-            if (e.getAttribute("location").equalsIgnoreCase("local")){
-                // We would be calling deployLocalResource
-                ret.put("local", ret.get("local") + 1);
-            }
-            else if (e.getAttribute("location").equalsIgnoreCase("hdfs")){
-               // We would be calling deployResourceToHDFS
-                ret.put("hdfs", ret.get("hdfs") + 1);
-            }
-        }
-        return ret;
-    }
+//    protected static Map<String, Integer> deployResourcesTest(Element doc) throws IOException{
+//        NodeList resources = doc.getElementsByTagName("resource");
+//        Map<String, Integer> ret = new HashMap<String, Integer>();
+//        ret.put("local", 0);
+//        ret.put("hdfs", 0);
+//        for (int i = 0; i < resources.getLength(); i++){
+//            Element e = (Element)resources.item(i);
+//            String source = e.getAttribute("source");
+//            String target = e.getAttribute("target");
+//            if (e.getAttribute("location").equalsIgnoreCase("local")){
+//                // We would be calling deployLocalResource
+//                ret.put("local", ret.get("local") + 1);
+//            }
+//            else if (e.getAttribute("location").equalsIgnoreCase("hdfs")){
+//               // We would be calling deployResourceToHDFS
+//                ret.put("hdfs", ret.get("hdfs") + 1);
+//            }
+//        }
+//        return ret;
+//    }
 
     private static void deployLocalResource(String source, String target) throws IOException{
         SSHClient ssh = new SSHClient();

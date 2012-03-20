@@ -1,0 +1,31 @@
+{
+    "workflow":[{
+        "name":"shipSorter",
+        "language":"python",
+        "inputs":[{
+            "name":"fileName",
+            "value":"aisShipData.csv"
+        },{
+            "name":"shipName",
+            "value":"ADEONA"
+        }],
+        "outputs":[{
+            "source":"ADEONA.csv",
+            "target":"ADEONA.csv",
+            "location":"local"
+        },{
+            "source":"ADEONA.kml",
+            "target":"ADEONA.kml",
+            "location":"local"
+        }],
+        "resources":[{
+            "source":"shipSorter.py",
+            "target":"shipSorter.py",
+            "location":"local"
+        },{
+            "source":"aisShipData.csv",
+            "target":"aisShipData.csv",
+            "location":"local"
+        }]
+    }]
+}

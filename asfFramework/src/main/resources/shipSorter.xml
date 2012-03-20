@@ -1,15 +1,16 @@
 <specification>
-	<analytic name="shipSorter" language="python"/>
-	<inputs>
-		<input name="fileName" value="aisShipData.csv"/>
-		<input name="shipName" value="ADEONA"/>
-	</inputs>
-	<outputs>
-		<output name="ADEONA.csv"/>
-		<output name="ADEONA.kml"/>
-	</outputs>
-	<resources>
-		<resource source="shipSorter.py" target="shipSorter.py" location="local"/>
-                <resource source="aisShipData.csv" target="aisShipData.csv" location="local"/>
-	</resources>
+	<analytic name="shipSorter" language="python">
+            <inputs>
+                    <input name="fileName" value="aisShipData.csv"/>
+                    <input name="shipName" value="ADEONA"/>
+            </inputs>
+            <outputs>
+                    <output name="ADEONA.csv"/>
+                    <output name="ADEONA.kml"/>
+            </outputs>
+            <resources>
+                    <resource source="shipSorter.py" target="shipSorter.py" location="local"/>
+                    <resource source="aisShipData.csv" target="aisShipData.csv" location="local"/>
+            </resources>
+        </analytic>
 </specification>
