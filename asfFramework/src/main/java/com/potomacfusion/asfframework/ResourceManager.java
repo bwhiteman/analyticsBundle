@@ -15,10 +15,6 @@ import net.schmizz.sshj.connection.channel.direct.Session;
 import net.schmizz.sshj.connection.channel.direct.Session.Command;
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
 import net.schmizz.sshj.xfer.FileSystemFile;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 /**
  *
  * @author SPines
@@ -53,26 +49,24 @@ public class ResourceManager {
     }
     
     // TEST ONLY - testing branching logic
-//    protected static Map<String, Integer> deployResourcesTest(Element doc) throws IOException{
-//        NodeList resources = doc.getElementsByTagName("resource");
-//        Map<String, Integer> ret = new HashMap<String, Integer>();
-//        ret.put("local", 0);
-//        ret.put("hdfs", 0);
-//        for (int i = 0; i < resources.getLength(); i++){
-//            Element e = (Element)resources.item(i);
-//            String source = e.getAttribute("source");
-//            String target = e.getAttribute("target");
-//            if (e.getAttribute("location").equalsIgnoreCase("local")){
-//                // We would be calling deployLocalResource
-//                ret.put("local", ret.get("local") + 1);
-//            }
-//            else if (e.getAttribute("location").equalsIgnoreCase("hdfs")){
-//               // We would be calling deployResourceToHDFS
-//                ret.put("hdfs", ret.get("hdfs") + 1);
-//            }
-//        }
-//        return ret;
-//    }
+    protected static Map<String, Integer> deployResourcesTest(List<Resource> resources) throws IOException{
+        Map<String, Integer> ret = new HashMap<String, Integer>();
+        ret.put("local", 0);
+        ret.put("hdfs", 0);
+        for (Resource r : resources){
+            String source = r.getSource();
+            String target = r.getTarget();
+            if (r.getLocation().equalsIgnoreCase("local")){
+                // We would be calling deployLocalResource
+                ret.put("local", ret.get("local") + 1);
+            }
+            else if (r.getLocation().equalsIgnoreCase("hdfs")){
+               // We would be calling deployResourceToHDFS
+                ret.put("hdfs", ret.get("hdfs") + 1);
+            }
+        }
+        return ret;
+    }
 
     private static void deployLocalResource(String source, String target) throws IOException{
         SSHClient ssh = new SSHClient();

@@ -25,8 +25,7 @@ public class RemoteAccess {
     private static void execute(String contextPath) throws IOException {
         SSHClient ssh = new SSHClient();
 
-        try {
-            
+        try {            
             // Connect, ignore host key verification
             ssh.addHostKeyVerifier(new PromiscuousVerifier());
             ssh.connect(Configurations.getProperty("HOST_NAME"), 22);

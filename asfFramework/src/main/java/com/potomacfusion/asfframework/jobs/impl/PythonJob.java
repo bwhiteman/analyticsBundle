@@ -10,7 +10,6 @@ import com.potomacfusion.asfframework.jobs.Job;
 import com.potomacfusion.asfframework.jobs.Output;
 import com.potomacfusion.asfframework.jobs.Resource;
 import java.util.List;
-import org.codehaus.jackson.annotate.JsonTypeName;
 
 /**
  *

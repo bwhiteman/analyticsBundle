@@ -4,13 +4,14 @@
  */
 package com.potomacfusion.assfframework;
 
-import org.w3c.dom.Element;
+import com.potomacfusion.asfframework.jobs.Resource;
+import java.util.List;
+import com.potomacfusion.asfframework.jobs.Workflow;
+import org.codehaus.jackson.map.ObjectMapper;
+import com.potomacfusion.asfframework.Configurations;
 import com.potomacfusion.asfframework.ResourceManager;
 import java.util.Map;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import org.junit.Test;
-import org.w3c.dom.Document;
 import static org.junit.Assert.*;
 
 /**
@@ -19,19 +20,18 @@ import static org.junit.Assert.*;
  */
 public class ResourceManagerTest extends ResourceManager {
 
-//    @Test
-//    public void testResourceBranchingLogic() {
-//        try {
-//            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-//            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-//            Document validPythonHadoop = dBuilder.parse(ClassLoader.getSystemResourceAsStream("validpythonhadoop.xml"));
-//            validPythonHadoop.getDocumentElement().normalize();
-//            Element e = (Element)validPythonHadoop.getChildNodes().item(0);
-//            Map<String, Integer> temp = ResourceManagerTest.deployResourcesTest(e);
-//            assertEquals(new Integer(2), temp.get("local"));
-//            assertEquals(new Integer(3), temp.get("hdfs"));
-//        } catch (Exception e) {
-//            fail();
-//        }
-//    }
+    @Test
+    public void testResourceBranchingLogic() {
+        try {
+            Configurations.init("src/main/resources/remote.properties");
+            ObjectMapper om = new ObjectMapper();
+            Workflow w = om.readValue(ClassLoader.getSystemResourceAsStream("validpythonhadoop.json"), Workflow.class);
+            List<Resource> r = w.getWorkflow().get(0).getResources(); 
+            Map<String, Integer> temp = ResourceManagerTest.deployResourcesTest(r);
+            assertEquals(new Integer(2), temp.get("local"));
+            assertEquals(new Integer(3), temp.get("hdfs"));
+        } catch (Exception e) {
+            fail();
+        }
+    }
 }

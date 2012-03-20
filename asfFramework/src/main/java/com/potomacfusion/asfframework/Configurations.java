@@ -22,6 +22,10 @@ public class Configurations {
         input.close();
     }
     
+    public static void setProperty(String key, String value){
+        props.setProperty(key, value);
+    }
+    
     public static String getProperty(String key){
         return props.getProperty(key);
     }
