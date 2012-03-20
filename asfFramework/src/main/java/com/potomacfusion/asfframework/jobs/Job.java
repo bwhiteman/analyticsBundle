@@ -4,6 +4,10 @@
  */
 package com.potomacfusion.asfframework.jobs;
 
+import com.potomacfusion.asfframework.jobs.impl.OozieStreamingJob;
+import com.potomacfusion.asfframework.jobs.impl.OozieJob;
+import com.potomacfusion.asfframework.jobs.impl.PythonJob;
+import com.potomacfusion.asfframework.jobs.impl.PythonHadoopJob;
 import java.util.List;
 import org.codehaus.jackson.annotate.JsonSubTypes;
 import org.codehaus.jackson.annotate.JsonSubTypes.Type;

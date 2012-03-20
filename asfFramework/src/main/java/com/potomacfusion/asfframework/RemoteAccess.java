@@ -1,6 +1,5 @@
 package com.potomacfusion.asfframework;
 
-import com.potomacfusion.asfframework.exceptions.InvalidXMLException;
 import com.potomacfusion.asfframework.jobs.*;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.common.IOUtils;
@@ -12,33 +11,7 @@ import java.io.IOException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 public class RemoteAccess {
-
-    // ##START BLOCK FOR ADDING ADDITIONAL JOB TYPES ##
-    private static enum JOBS {PYTHON, PYTHON_HADOOP, OOZIE, OOZIE_STREAMING};
     
-    private static String getCallToServer(Job j) throws InvalidXMLException{
-        Job myJob = null;
-
-        // For each job in the enum above, link the text to a specific Job subclass
-        switch(JOBS.valueOf(j.getLanguage())){
-            case PYTHON:
-                return ((PythonJob)j).toCommandLine();
-            case PYTHON_HADOOP:
-                return ((PythonHadoopJob)j).toCommandLine();
-            case OOZIE:
-                return ((OozieJob)j).toCommandLine();
-            case OOZIE_STREAMING:
-                return ((OozieStreamingJob)j).toCommandLine();
-        }
-
-        if (myJob == null){
-            throw new InvalidXMLException();
-        }
-        return null;
-    }
-    
-    // ##END BLOCK FOR ADDING ADDITIONAL JOB TYPES ##
-
     public static void main(String[] args) throws IOException {
         
         // java -jar framework.jar context.xml remote.properties

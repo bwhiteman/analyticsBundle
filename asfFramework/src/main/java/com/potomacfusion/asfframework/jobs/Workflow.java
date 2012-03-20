@@ -4,6 +4,8 @@
  */
 package com.potomacfusion.asfframework.jobs;
 
+import com.potomacfusion.asfframework.jobs.impl.PythonJob;
+import com.potomacfusion.asfframework.jobs.impl.PythonHadoopJob;
 import com.potomacfusion.asfframework.exceptions.InvalidXMLException;
 import java.io.IOException;
 import java.util.ArrayList;
